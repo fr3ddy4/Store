@@ -43,10 +43,6 @@ public class StoreServiceImplTest {
     // Проверяем, была ли вызвана ошибка при других входных данных
     @Test(expected = IllegalArgumentException.class)
     public void testBuyOnIncorrectData() {
-        try {
-            testedStoreService.buy("Not tovar");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        testedStoreService.buy("Not tovar");
     }
 }

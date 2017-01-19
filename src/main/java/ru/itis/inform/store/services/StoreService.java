@@ -1,14 +1,11 @@
 package ru.itis.inform.store.services;
 
-
-import java.io.IOException;
-
 public interface StoreService {
     /**
      * Покупка товара по имени
      * @param itemName имя товара
      */
-    void buy(String itemName) throws IOException;
+    void buy(String itemName);
 
     /**
      * Проверяет, есть ли товар на складе
@@ -16,5 +13,11 @@ public interface StoreService {
      * @return true - если товар найден,
      * false - в противном случае
      */
-    boolean isExist(String itemName) throws IOException;
+    boolean isExist(String itemName);
+
+    /**
+     * Удаляет товар
+     * @param itemName название товара
+     */
+    void delete(String itemName);
 }

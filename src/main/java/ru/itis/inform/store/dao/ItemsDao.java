@@ -3,26 +3,24 @@ package ru.itis.inform.store.dao;
 
 import ru.itis.inform.store.dao.models.Item;
 
-import java.io.IOException;
-
 public interface ItemsDao {
 
     /**
      * Удаляет товар из хранилища
-     * @param itemName
+     * @param itemName название товара
      */
-    void delete(String itemName) throws IOException;
+    void delete(String itemName);
 
     /**
      * Возвращает описание товара из БД
-     * @param itemName
-     * @return
+     * @param itemName название товара
+     * @return объект типа Item
      */
-    Item select(String itemName) throws IOException;
+    Item select(String itemName);
 
     /**
      * Adds an item to the storage
-     * @param itemName
+     * @param itemName название товара
      */
-    void add(String itemName, double price, int id) throws IOException;
+    void add(String itemName, double price, int id);
 }
