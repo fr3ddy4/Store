@@ -8,14 +8,13 @@ import java.util.ArrayList;
 public class ItemsDaoTsvBasedImpl implements ItemsDao {
     private BufferedReader reader;
     private PrintWriter writer;
-    private String path;
     private String delimiter;
-    private File file = new File(path);
+    private File file;
     private ArrayList<String> fileCopy = new ArrayList<String>();
 
     ItemsDaoTsvBasedImpl(String path) {
         delimiter = "   ";
-        this.path = path;
+        file = new File(path);
         textToStrList();
     }
 
