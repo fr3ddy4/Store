@@ -3,69 +3,59 @@ package ru.itis.inform.store.dao;
 import ru.itis.inform.store.dao.models.Item;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.opencsv.CSVReader;
 
 public class ItemsDaoCsvBasedImpl implements ItemsDao {
-    private BufferedReader reader;
     private PrintWriter writer;
-    private String delimiter;
     private File file;
-    private ArrayList<String> fileCopy = new ArrayList<String>();
+    private CSVReader csvReader;
 
-    ItemsDaoCsvBasedImpl(String path, String delimiter) {
-        this.delimiter = delimiter;
+    ItemsDaoCsvBasedImpl(String path) {
         file = new File(path);
-        textToStrList();
+        try {
+            csvReader = new CSVReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(String itemName) {
         initializeWriter();
-        String current;
-        for (String aFileCopy : fileCopy) {
-            current = aFileCopy;
-            String[] column = current.split(delimiter);
-            if (!column[0].equals(itemName))
-                writer.write(current);
+        String[] current;
+        try {
+            while ((current = csvReader.readNext()) != null) {
+                if (!current[0].equals(itemName))
+                    writer.write(Arrays.toString(current));
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
         }
         writer.close();
     }
 
     public Item select(String itemName) {
-        initializeWriter();
-        for (String aFileCopy : fileCopy) {
-            String[] columns = aFileCopy.split(delimiter);
-            if (columns[0].equals(itemName)) {
-                return new Item(columns[0], Double.valueOf(columns[1]), Integer.valueOf(columns[2]));
-            }
-        }
-        return null;
-    }
-
-    private void textToStrList() {
-        initializeReader();
-        String current;
+        String[] current;
         try {
-            while ((current = reader.readLine()) != null) {
-                fileCopy.add(current);
+            while ((current = csvReader.readNext()) != null) {
+                if (current[0].equals(itemName)) {
+                    return new Item(current[0], Double.valueOf(current[1]), Integer.valueOf(current[2]));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void add(String itemName, double price, int id) {
         initializeWriter();
-        writer.write("\n" + itemName + delimiter + price + delimiter + id);
+        writer.write("\n" + itemName + "," + price + "," + id);
         writer.close();
     }
 
-    private void initializeReader() {
-        try {
-            reader = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void initializeWriter() {
         try {
