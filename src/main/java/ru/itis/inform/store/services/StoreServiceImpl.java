@@ -14,7 +14,7 @@ public class StoreServiceImpl implements StoreService {
     private File file;
     private BufferedReader reader;
 
-    public StoreServiceImpl(ItemsDao itemsDao, String propertiesPath) {
+    public StoreServiceImpl(String propertiesPath) {
         file = new File(propertiesPath);
         initializeReader();
         PropertyConfigurator.configure("src/main/java/ru/itis/inform/store/services/log4j.properties");
